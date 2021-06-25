@@ -2,20 +2,14 @@ import React, { useState, useEffect, useContext } from "react"
 import { StaticQuery, graphql, Link, useStaticQuery } from "gatsby"
 
 //styles / animation
-import styled from "@emotion/styled"
 import { TransitionGroup } from "react-transition-group"
 
-//ui
-import { useTheme } from "@emotion/react"
-import { TypeWriter } from "../util/typewriter"
-import { BtnPrimary, BtnSecondary, Btn } from "../buttons.js"
+import styled, { useTheme } from "@emotion/react"
 
-//threejs experience
-import ThreePortfolio from "../threejs/three-portfolio-page"
-import { portfolioGraphic } from "../../static/hardcoded-svgs"
+import { heroGraphic, telstraTower } from "../../static/hardcoded-svgs"
 
 //context
-import { GlobalStore } from "../../layout/layout"
+// import { GlobalStore } from "../../layout/layout"
 
 const HeroHeader = styled.section`
   max-height: 35vh;
@@ -62,19 +56,10 @@ export default React.memo(({ context, headerGraphic, headline, headlineDescripti
         <div>{description}</div>
         <div className="buttons">
           <a href="#Contact" className="button -primary">
-            <BtnSecondary
-              color="white"
-              padding="12.5px 30px"
-              text="Let's Connect"
-            />
+            
           </a>
           <a href="#Contact" className="button -primary">
-            <BtnSecondary
-              bg="transparent"
-              padding="12.5px 30px"
-              color="transparan  t"
-              text="Start project"
-            />
+             
           </a>
         </div>
       </div>

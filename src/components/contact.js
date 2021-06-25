@@ -19,8 +19,7 @@ import { red } from "@material-ui/core/colors"
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp"
 import { logoFull } from "../../static/hardcoded-svgs"
 
-import { BtnPrimary, BtnBlob, BtnSecondary } from "../buttons"
-import Confetti from "react-confetti"
+// import Confetti from "react-confetti"
 
 const _Contact = styled.div`
   width: 100%;
@@ -237,7 +236,7 @@ export default React.memo(
       >
         {formSubmitted && (
           <div className="messenger">
-            <Confetti
+            {/* <Confetti
               className="confetti"
               colors={[
                 theme.colors.primary,
@@ -247,7 +246,7 @@ export default React.memo(
               ]}
               numberOfPieces={50}
               gravity={0.17}
-            />
+            /> */}
             <h1>Thank you!</h1>
             <p>
               Looking forward to getting in touch, you will have a response
@@ -299,13 +298,13 @@ export default React.memo(
             name="contactMessage"
           />
         </div>
-        <BtnPrimary
+        {/* <BtnPrimary
           text="Contact"
           type="submit"
           id="contact-submit"
           // color={theme.colors.textPrimary}
           callback={() => SubmitForm()}
-        />
+        /> */}
         <div dangerouslySetInnerHTML={{ __html: "" }} />
       </_Contact>
     )

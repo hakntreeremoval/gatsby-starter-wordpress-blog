@@ -4,17 +4,14 @@ import { Link, useStaticQuery, graphql } from "gatsby"
 
 import styled from "@emotion/styled"
 
-import { InlineIcon } from "@iconify/react"
+// import { InlineIcon } from "@iconify/react"
 // import chevronRight from "@iconify/icons-mdi/chevron-right";
 // import githubLogo from "@iconify/icons-fa-brands/github-square";
 // import linkedinLogo from "@iconify/icons-ion/logo-linkedin";
 // import instagramLogo from "@iconify/icons-ri/instagram-fill";
 import {} from "../../static/hardcoded-svgs"
 
-import { Btn, BtnPrimary } from "../components/buttons"
-
 import { Box, Container } from "@material-ui/core"
-import { render } from "react-three-fiber"
 import { pageQuery } from "./layout"
 import { useTheme } from "@emotion/react"
 
@@ -23,9 +20,10 @@ const _Footer = styled.footer``
 export default React.memo(({ children }) => {
   // const theme = useTheme();
   const pages = [
-    { name: "portfolio", url: "./" },
-    { name: "services", url: "./services" },
-    { name: "blog", url: "./blog" },
+    { name: "home", url: "#home" },
+    { name: "about", url: "#about" },
+    { name: "services", url: "#services" },
+    { name: "contact", url: "#contact" },
   ]
 
   return (
