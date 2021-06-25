@@ -71,10 +71,41 @@ module.exports = {
     // See https://www.gatsbyjs.com/plugins/gatsby-plugin-react-helmet/?=gatsby-plugin-react-helmet
     `gatsby-plugin-react-helmet`,
 
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        // The property ID; the tracking code won't be generated without it. replace with yours
+        trackingId: "UA-164743872-1",
+        head: true,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-preload-fonts`,
+      options: {
+        crossOrigin: `use-credentials`,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `Aiden Faulconer`,
+        short_name: `Aiden Faulconer`,
+        start_url: `/`,
+        background_color: `#fff`,
+        theme_color: `#381696`,
+        display: `standalone`,
+        icon: "src/images/icon.png",
+      },
+    },
+    `gatsby-plugin-sass`,
+    `gatsby-plugin-react-helmet`,
+    // siteURL is a must for sitemap generation
+    `gatsby-plugin-sitemap`,
     /**
      * this (optional) plugin enables Progressive Web App + Offline functionality
      * To learn more, visit: https://gatsby.dev/offline
      */
-    // `gatsby-plugin-offline`,
+    `gatsby-plugin-offline`,
+    `gatsby-plugin-remove-trailing-slashes`, // remove pesky /'s at the end of routes ie: localhost/x/
   ],
 }
