@@ -1,0 +1,29 @@
+@font-face {
+  font-family: "Berlin-Sans-Demi";
+  src: url("BerlinSansFBDemi-Bold.woff2") format("woff2"),
+    url("BerlinSansFBDemi-Bold.woff") format("woff"),
+    url("BerlinSansFBDemi-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Berlin-Sans-FB";
+  src: url("BerlinSansFB-Bold.woff2") format("woff2"),
+    url("BerlinSansFB-Bold.woff") format("woff"),
+    url("BerlinSansFB-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Berlin-Sans-FB";
+  src: url("BerlinSansFB-Reg.woff2") format("woff2"),
+    url("BerlinSansFB-Reg.woff") format("woff"),
+    url("BerlinSansFB-Reg.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}

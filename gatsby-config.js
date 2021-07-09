@@ -14,6 +14,9 @@ module.exports = {
    * If you need any more you can search here: https://www.gatsbyjs.com/plugins/
    */
   plugins: [
+    //needed to enable emotion styled components
+    // "gatsby-plugin-emotion",
+    "gatsby-plugin-material-ui",
     {
       /**
        * First up is the WordPress source plugin that connects Gatsby
@@ -62,7 +65,7 @@ module.exports = {
         short_name: `GatsbyJS & WP`,
         start_url: `/`,
         background_color: `#ffffff`,
-        theme_color: `#663399`,
+        theme_color: `#EC973C`,
         display: `minimal-ui`,
         icon: `content/assets/gatsby-icon.png`,
       },
@@ -71,10 +74,29 @@ module.exports = {
     // See https://www.gatsbyjs.com/plugins/gatsby-plugin-react-helmet/?=gatsby-plugin-react-helmet
     `gatsby-plugin-react-helmet`,
 
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        // The property ID; the tracking code won't be generated without it. replace with yours
+        trackingId: "UA-164743872-1",
+        head: true,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-preload-fonts`,
+      options: {
+        crossOrigin: `use-credentials`,
+      },
+    },
+    `gatsby-plugin-sass`,
+    `gatsby-plugin-react-helmet`,
+    // siteURL is a must for sitemap generation
+    `gatsby-plugin-sitemap`,
     /**
      * this (optional) plugin enables Progressive Web App + Offline functionality
      * To learn more, visit: https://gatsby.dev/offline
      */
-    // `gatsby-plugin-offline`,
+    `gatsby-plugin-offline`,
+    `gatsby-plugin-remove-trailing-slashes`, // remove pesky /'s at the end of routes ie: localhost/x/
   ],
 }
