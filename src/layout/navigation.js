@@ -135,7 +135,7 @@ export default function Navigation({ theme, themeState, children, window }) {
           boxShadow: "none",
         }}
       >
-        <Toolbar className="justify-content-between">
+        <Toolbar className="justify-content-between px-3">
           {logo("#3F310E")}
           {smallLogo()}
           {pageNav()}

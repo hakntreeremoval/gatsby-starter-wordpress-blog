@@ -3,11 +3,18 @@ import React, { useState, useEffect, useContext } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import { Button, Icon, Typography } from "@material-ui/core"
 
+// raise elevation on hover for material ui buttton
 const useStyles = makeStyles(theme => ({
   root: {
-    "& > *": {
-      margin: theme.spacing(1),
+    "&:hover": {
+      background: theme.palette.background.secondary,
+      color: theme.palette.text.secondary,
+      boxShadow: theme.shadows.brand,
     },
+    background: theme.shadows.brand,
+    // margin: theme.spacing(3),
+    // "& > *": {
+    // },
   },
 }))
 
@@ -15,24 +22,17 @@ const useStyles = makeStyles(theme => ({
 export default function CustomButton ({Icon,shadow,children,action}) {
  const classes = useStyles()
 
-  //configure what section is in view
-  const [inProp, setInProp] = useState(false);
-  useEffect(() => {
-    setInProp(true);
-  }, []);
-
   return (
-    <>
-      <Button
+    // raise elevation on hover for material ui buttton
+      <Button 
         onClick={()=>action && action()}
-        className={`brand-border-radius no-wrap justify-content-between px-3 ${shadow && "brand-shadow"}`}
+        className={ classes.root +` brand-border-radius no-wrap justify-content-between px-3 ${shadow && "brand-shadow"}`}
         color="primary"
-        endIcon={<Icon className="brand-shadow brand-border-radius p-1" />}
+        endIcon={<Icon className="brand-shadow brand-border-radius m-1 p-2" style={{minWidth: "35px",minHeight: "35px"}} />}
         size="large"
         variant="contained"
       >
           {children}
       </Button>
-    </>
   )
 }

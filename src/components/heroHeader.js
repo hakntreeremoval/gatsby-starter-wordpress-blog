@@ -6,29 +6,42 @@ import { TransitionGroup } from "react-transition-group"
 
 import { telstraTower } from "../../static/hardcoded-svgs"
 import { heroGraphic } from "../../static/heroGraphic.js"
-import { Button, Icon, Typography } from "@material-ui/core"
-import { Phone } from "@material-ui/icons"
+import { Button, Icon, Typography, Grid, makeStyles } from "@material-ui/core"
+import { ContactPhoneRounded, Phone } from "@material-ui/icons"
 import CustomButton from "./customButton.js"
 // const _Button = styled(Button)`
 //   background: orange;
 //   color: black;
 //   font-family: Berlin-Sans-FB;
 // `
-import * as LottiePlayer from "@lottiefiles/lottie-player"
+
+
+//makestyles for material ui
+const useStyles = makeStyles(theme => ({
+  heroGraphic: {
+    [theme.breakpoints.down('lg')]: {
+      opacity: .15,
+      position: 'absolute',
+      display: 'absolute',
+      top: '-22.5%',
+      zIndex: -1,
+      order: 0,
+      maxWidth:'800px'
+    },
+    position: 'relative',
+    zIndex: -1,
+  }
+}))
 
 //prettier-ignore
 export default function HeroHeader ({ context, headerGraphic, headline, headlineDescription }) {
   //prettier-ignore
   const { site: { siteMetadata: { title, description } } } = useStaticQuery(pageQuery);
 
-  //configure what section is in view
-  const [inProp, setInProp] = useState(false)
-  useEffect(() => {
-    setInProp(true)
-  }, [])
+  const classes = useStyles()
 
   //prettier-ignore
-  const _telstraTower = React.useCallback(() => (<div className="position-absolute overflow-hidden" style={{ right: "0px", top: "0px" }} dangerouslySetInnerHTML={{ __html: telstraTower }}></div>), []);
+  const _telstraTower = React.useCallback(() => (<div className="position-absolute overflow-hidden d-none d-lg-block" style={{ right: "0px", top: "10%",zIndex:0 }} dangerouslySetInnerHTML={{ __html: telstraTower }}></div>), []);
 
   const heroData = {
     headline: () => (
@@ -54,9 +67,10 @@ export default function HeroHeader ({ context, headerGraphic, headline, headline
     () => (
       <>
         <div 
-          className="col-5 position-relative h-100 d-none d-md-block m-auto"
+          className={classes.heroGraphic + " col-5 h-100 m-auto"}
           dangerouslySetInnerHTML={{ __html: heroGraphic }}
-        ></div>
+          style={{maxWidth: "700px"}}
+        />
         {/* <LottiePlayer
         src="../../static/animations/removal.json"
         mode="bounce"
@@ -74,27 +88,50 @@ export default function HeroHeader ({ context, headerGraphic, headline, headline
   )
   return (
     <>
-      <section className="hero-header position-relative">
-        {_telstraTower()}
-        <div className="m-auto col-9">
-          <div className="d-flex flex-wrap justify-content-center">
-            <div className="flex-column h-100 position-relative m-auto">
-              {heroData.headline()}
-              {heroData.description()}
-              <div className="col-5 mt-3 w-100 grid-wrapper">
-                <CustomButton shadow action={() => ""} Icon={Phone}>
-                  Call for a free quote
-                </CustomButton>
-                <CustomButton shadow action={() => ""} Icon={Phone}>
-                  Call us today!
-                </CustomButton>
+      <div
+        style={{
+          background: "#F2E5C4",
+          marginTop: '-80px',
+          marginBottom: "100px",
+          paddingTop: '140px',
+          paddingBottom: '100px',
+          height:"150%",
+          width:"110vw",
+          zIndex: 0
+          // boxShadow: "inset 0px -37px 34px -15px rgba(63, 49, 14, 0.15)",
+        }}
+      >
+        <section className="col-xl-8 col-10 m-auto">
+          {/* div wrapper only active on mobile breakpoint */}
+
+          <div>
+            <div className="d-flex flex-wrap justify-content-center">
+              <div className="flex-column h-100 position-relative m-auto">
+                {heroData.headline()}
+                {heroData.description()} 
+                  <Grid container spacing={4}  className="mt-4">
+                    <Grid item xs={6}>
+                      <CustomButton shadow action={() => ""} Icon={ContactPhoneRounded}>
+                        Call for a free quote
+                      </CustomButton>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <CustomButton shadow action={() => ""} Icon={Phone}>
+                        Call us today!
+                      </CustomButton>
+                    </Grid>
+                  </Grid> 
+              </div>
+              {_heroGraphic()}
+              {/* active on mobile breakpoint */}
+              <div className="col-5 mt-3 mx-auto w-100 grid-wrapper d-sm-none">
               </div>
             </div>
-
-            {_heroGraphic()}
           </div>
-        </div>
-      </section>
+          {_telstraTower()}
+          {/* <div className="brand-section-bg d-sm-none d-block p-4"></div> */}
+        </section>
+      </div>
     </>
   )
 }

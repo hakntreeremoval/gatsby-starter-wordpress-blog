@@ -16,24 +16,24 @@ module.exports = {
   plugins: [
     //needed to enable emotion styled components
     // "gatsby-plugin-emotion",
-    "gatsby-plugin-material-ui",
-    {
-      /**
-       * First up is the WordPress source plugin that connects Gatsby
-       * to your WordPress site.
-       *
-       * visit the plugin docs to learn more
-       * https://github.com/gatsbyjs/gatsby/blob/master/packages/gatsby-source-wordpress/README.md
-       *
-       */
-      resolve: `gatsby-source-wordpress`,
-      options: {
-        // the only required plugin option for WordPress is the GraphQL url.
-        url:
-          process.env.WPGRAPHQL_URL ||
-          `https://wpgatsbydemo.wpengine.com/graphql`,
-      },
-    },
+    // "gatsby-plugin-material-ui",
+    // {
+    //   /**
+    //    * First up is the WordPress source plugin that connects Gatsby
+    //    * to your WordPress site.
+    //    *
+    //    * visit the plugin docs to learn more
+    //    * https://github.com/gatsbyjs/gatsby/blob/master/packages/gatsby-source-wordpress/README.md
+    //    *
+    //    */
+    //   resolve: `gatsby-source-wordpress`,
+    //   options: {
+    //     // the only required plugin option for WordPress is the GraphQL url.
+    //     url:
+    //       process.env.WPGRAPHQL_URL ||
+    //       `https://wpgatsbydemo.wpengine.com/graphql`,
+    //   },
+    // },
 
     /**
      * We need this plugin so that it adds the "File.publicURL" to our site
@@ -91,7 +91,7 @@ module.exports = {
     `gatsby-plugin-sass`,
     `gatsby-plugin-react-helmet`,
     // siteURL is a must for sitemap generation
-    `gatsby-plugin-sitemap`,
+    // `gatsby-plugin-sitemap`,
     /**
      * this (optional) plugin enables Progressive Web App + Offline functionality
      * To learn more, visit: https://gatsby.dev/offline

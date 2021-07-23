@@ -85,12 +85,12 @@ export default function Layout({ children, window }) {
           </Helmet>
           <Navigation />
 
-          {/* <Container maxWidth="xl"> */}
-          <div className="row">
-            <div className="col-12">{children}</div>
-            {/* <TableOfContents /> */}
-          </div>
-          {/* </Container> */}
+          <Container maxWidth={false}>
+            <div className="row">
+              {children}
+              {/* <TableOfContents /> */}
+            </div>
+          </Container>
 
           <Footer />
           <Zoom in={trigger} role="presentation">

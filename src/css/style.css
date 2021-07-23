@@ -84,7 +84,7 @@ body {
   font-family: var(--font-body);
   font-size: var(--fontSize-1);
   color: var(--color-text);
-  background: #f2e5c4;
+  background: #f2d7ac;
 }
 
 footer {
@@ -341,11 +341,10 @@ a:focus {
 /* hakn.org specific styles */
 
 section {
-  min-height: 400px;
+  min-height: 500px;
   width: 100vw;
-  margin-top: 25px;
-  /* margin-bottom: 130px; */
-  padding: var(--spacing-4);
+  margin-top: 80px;
+  margin-bottom: 80px;
 }
 
 footer {
@@ -378,7 +377,18 @@ footer {
 
 .brand-section-bg {
   border-radius: 35px;
-  background: #ddd1b3;
+  box-shadow: 0px 4px 20px rgba(63, 49, 14, 0.6);
+  background: linear-gradient(
+      180deg,
+      rgba(242, 229, 196, 0.2) 39.58%,
+      rgba(226, 131, 21, 0.2) 73.44%
+    ),
+    radial-gradient(
+      107.14% 107.14% at 15.12% 13.17%,
+      #f2e5c4 41.67%,
+      #f5cb98 100%
+    );
+  margin: 150px, 0;
 }
 
 .brand-border {
@@ -386,13 +396,35 @@ footer {
 }
 
 .brand-shadow {
-  box-shadow: 0px 0px 7.5px #3f310e81;
+  box-shadow: 0px 4px 20px rgba(63, 49, 14, 0.6);
 }
 
-/* material ui ovverrides */
+
+/* hard style overrides for all material ui components */
+.MuiSlider-markLabelActive {
+  color: #ec973c;
+}
+
 .MuiContainer-root {
-  background: #f2e5c4;
+  padding: 0px !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  background: #f2d7ac; 
+}
+@media (min-width: 600px) {
+  .MuiContainer-root {
+    padding: 0px !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    background: #f2d7ac; 
+  }
 }
 
+.MuiInputBase-formControl {
+  background: #f2e5c4;
+  color: #3f310e;
+}
+
+/* gatsby style overrides */
 .gatsby-focus-wrapper {
 }
