@@ -39,15 +39,18 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.shortest,
     }),
   },
+  contentBox: {
+    boxShadow: theme.shadows.brand,
+  },
   expandOpen: {
     transform: "rotate(180deg)",
   },
-  avatar: {
-    backgroundColor: red[500],
+  sectionColor: {
+    backgroundColor: theme.palette.text.primary,
   },
 }))
 
-export default function CustomCard({ serviceData }) {
+export default React.memo(({ serviceData, title }) => {
   const classes = useStyles()
 
   const [expanded, setExpanded] = React.useState(false)
@@ -55,64 +58,76 @@ export default function CustomCard({ serviceData }) {
   const handleExpandClick = () => setExpanded(!expanded)
   //prettier-ignore
   const contentBox = React.useCallback(img => (
-      <div
-        onClick={() => handleExpandClick()}
-      className="mx-auto my-4 top-0"
-      style={{minWidth: '250px',mixBlendMode: "multiply"}}
-        dangerouslySetInnerHTML={{ __html: styledContentBox(img) }}
-      />
-    ))
+    <div
+      onClick={() => handleExpandClick()}
+      className="my-4 top-0 mx-auto"
+      style={{ minWidth: "250px",maxWidth: "250px", mixBlendMode: "multiply" }}
+      dangerouslySetInnerHTML={{ __html: styledContentBox(img) }}
+    />
+  ))
 
   return (
     <section>
-      <div className="brand-border col-10 d-flex flex-wrap brand-section-bg mx-auto p-5">
-        {/* map out the data pulled from wordpress */}
-        {serviceData.map(data => (
-          <div className="position-relative m-auto">
-            <Card className={classes.root} elevation={0}>
-              <CardContent>
-                <Typography variant="h3" component="h3" className="m-auto">
-                  {data.title}
-                </Typography>
-              </CardContent>
-              {contentBox(data.image)}
-              <CardActions
-                disableSpacing
-                style={{ marginTop: "-65px", zIndex: 25 }}
-              >
-                <IconButton
-                  className={clsx(classes.expand, {
-                    [classes.expandOpen]: expanded,
-                  })}
-                  color="secondary"
-                  onClick={() => handleExpandClick()}
-                  aria-expanded={expanded}
-                  aria-label="show more"
-                >
-                  <ExpandMoreIcon
-                    fontSize="large"
-                    color="secondary"
-                    className="brand-shadow brand-border-radius p-1 brand-primary"
-                  />
-                </IconButton>
-              </CardActions>
-
-              <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Typography
+        variant="h2"
+        gutterBottom
+        className="m-auto mb-3 mt-3 col-xl-8 col-md-10 col-11"
+        style={{ fontWeight: "bolder" }}
+      >
+        {title}
+      </Typography>
+      <div className="col-xl-8 col-10 brand-section-bg mx-auto p-4">
+        <div className="d-flex flex-wrap">
+          {serviceData.map(data => (
+            <div className="position-relative mx-auto top-0" key={data.title}>
+              <Card className={classes.root} elevation={0} key={data.title + Math.random()}>
                 <CardContent>
                   <Typography
-                    align="center"
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
+                    variant="h3"
+                    className="m-auto"
+                    color="secondary"
+                    style={{ marginbottom: "-50px" }}
                   >
-                    {data.description}
+                    {data.title}
                   </Typography>
                 </CardContent>
-              </Collapse>
-            </Card>
-          </div>
-        ))}
+                {contentBox(data.image)}
+                <CardActions
+                  disableSpacing
+                  style={{ marginTop: "-65px", zIndex: 25 }}
+                >
+                  <IconButton
+                    className={clsx(classes.expand, {
+                      [classes.expandOpen]: expanded,
+                    })}
+                    color="secondary"
+                    onClick={() => handleExpandClick()}
+                    aria-expanded={expanded}
+                    aria-label="show more"
+                  >
+                    <ExpandMoreIcon
+                      fontSize="large"
+                      color="secondary"
+                      className="brand-shadow brand-border-radius p-1 brand-primary"
+                    />
+                  </IconButton>
+                </CardActions>
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                  <CardContent>
+                    <Typography
+                      align="left"
+                      variant="body1"
+                      color="secondary" 
+                    >
+                      {data.description}
+                    </Typography>
+                  </CardContent>
+                </Collapse>
+              </Card>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )
-}
+})
