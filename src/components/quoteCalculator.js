@@ -51,6 +51,12 @@ const useStyles = makeStyles(theme => ({
   invoice: {
     color: theme.palette.text.primary,    
   },
+  invoiceCard: {
+    background: theme.palette.background.primary,
+    borderRadius: theme.shape.brandBorderRadius,
+    boxShadow: theme.shadows.brand,
+    color: theme.palette.background.default,
+  },
   card: {
     background: theme.palette.background.secondary,
     borderRadius: theme.shape.brandBorderRadius,
@@ -164,13 +170,11 @@ export default React.memo(({ data, context, headerGraphic, headline, headlineDes
     "Total cost": 0,
   })
 
-  useEffect(()=>{
-    quoteCalculatorState.stumpRemoval = defaultInput.stumpRemoval//fix
-    calculateTotalCost();
-  },[])
+  //every time the quote calculator state is changed, recalculate the invoice, calculated on component mount aswell
+  useEffect(()=>calculateTotalCost(),[,quoteCalculatorState])
+  useEffect(()=>calculateTotalCost(),[])
 
   const calculateTotalCost = () =>{ 
-
     let truncateAmount = 2;
     let currentQuote = quoteCalculatorState
     // alert(!currentQuote.stumpRemoval)//value isnt updated when its needed to, this compensates for that
@@ -202,11 +206,9 @@ export default React.memo(({ data, context, headerGraphic, headline, headlineDes
       "Total cost": totalCost,
     } 
     console.log(invoiceState)
+
+    //only change the invoice state since the quote is only reactive to user input
     changeInvoiceState(treeCostsObject)
-    changeQuoteCalculatorState(prevState => ({
-        ...prevState,
-        totalCost: totalCost
-    }))
   };
 
 
@@ -216,7 +218,6 @@ export default React.memo(({ data, context, headerGraphic, headline, headlineDes
       ...prevState,
       treeHeight: inputHeightInCentimetres,
     }))
-    calculateTotalCost();
   }, [quoteCalculatorState])
     
     const calculateWidthCost = React.useCallback(inputWidthInCentimetres =>{
@@ -224,7 +225,6 @@ export default React.memo(({ data, context, headerGraphic, headline, headlineDes
         ...prevState,
         treeWidth: inputWidthInCentimetres,
       })) 
-      calculateTotalCost();
     },[quoteCalculatorState])
     
     const calculateNumberOfTreesCost = React.useCallback(numberOfTrees =>{
@@ -232,15 +232,18 @@ export default React.memo(({ data, context, headerGraphic, headline, headlineDes
         ...prevState,
         numberOfTrees: numberOfTrees,
       }))
-      calculateTotalCost();
     },[quoteCalculatorState])
       
     //switch is fucking inverted becauase its really dumb so ill fix it later
     const calculateStumpRemovalCost = React.useCallback((checked) =>{
-      changeQuoteCalculatorState(prevState => ({...prevState,stumpRemoval: !prevState.stumpRemoval}))
-      alert(quoteCalculatorState.stumpRemoval + " " + checked)
-      calculateTotalCost();
-    },[,quoteCalculatorState])
+
+      //change the stump removal boolean to the checked value, ensure the state is updated then calculate the total cost
+      changeQuoteCalculatorState(prevState => ({
+        ...prevState,
+        stumpRemoval: checked,
+      }))
+      // alert(quoteCalculatorState.stumpRemoval + " " + checked)
+    },[quoteCalculatorState])
       
     const calculateTreeHazardsCost = React.useCallback(description => {
       const extremeDangersRegularExpression = new RegExp(
@@ -254,8 +257,6 @@ export default React.memo(({ data, context, headerGraphic, headline, headlineDes
       console.log(dangerousDangerRegularExpression)
       
       //evaluate individual costs for each key term picked up
-      //...
-      
       changeQuoteCalculatorState(prevState => ({
         ...prevState,
         isDangerous: dangerousDangerRegularExpression.length > 0,
@@ -263,7 +264,6 @@ export default React.memo(({ data, context, headerGraphic, headline, headlineDes
         numberOfExtremeDangers: extremeDangersRegularExpression.length,
         numberOfDangers: dangerousDangerRegularExpression.length,
       }))
-      calculateTotalCost();
     },[quoteCalculatorState])
         
     const centimetersToMilimetres = useCallback(cm => cm * 0.01, [])
@@ -288,18 +288,18 @@ export default React.memo(({ data, context, headerGraphic, headline, headlineDes
     finalPrice => (
     <div className="position-relative mx-auto text-center w-100 mt-6" style={{minHeight: "250px",color: "white" }}>
       <div style={{ minWidth: "200px"}} className="position-absolute bottom-0 w-100 h-100" dangerouslySetInnerHTML={{ __html: quoteCalculator }}/>
-      <Typography align="center" variant="h2" className={classes.typography + " position-absolute w-100"} style={{top: "0%",fontWeight: 'bold'}}>ESTIMATED COST</Typography>
-      <Typography align="center" variant="h3" className={classes.typography + " position-absolute w-100 m-auto"} style={{bottom: "25%"}}>{finalPrice+"$"}</Typography>
+      <Typography align="center" variant="h3" className={classes.typography + " position-absolute w-100"} style={{top: "0%",fontWeight: 'bold'}}>ESTIMATED COST</Typography>
+      <Typography align="center" variant="h3" className={classes.typography + " position-absolute w-100 m-auto"} style={{bottom: "25%"}}>{
+        invoiceState["Total cost"]+"$"}</Typography>
     </div>
-  ),[])
+  ),[,invoiceState])
 
   //state is tied to quoteCalculatorState, therefore no need to turn into react state as it is already reactive
   const showInvoice = React.useCallback(
     // prettier-ignore
     () => (
       //if invoiceState has all 0 then dont continue
-      invoiceState["Total cost"] > 0 &&
-      <Grid container spacing={1} className="position-relative text-center mx-auto w-100 brand-section-bg p-4 mb-6 justify-content-evenly">
+      <Grid container spacing={1} className={classes.invoiceCard+" position-relative text-center mx-auto w-100 p-4 mb-6 justify-content-evenly"}>
         {Object.keys(invoiceState).map(key => invoiceState[key] >0 &&
           <Grid container item xs={12} spacing={2}>
             <Grid item xs={8}>
@@ -313,7 +313,7 @@ export default React.memo(({ data, context, headerGraphic, headline, headlineDes
         )}
       </Grid> 
     ),
-    [quoteCalculatorState]
+    [,invoiceState]
   )
 
   const valueText = value => `${value} cm`
@@ -410,15 +410,14 @@ export default React.memo(({ data, context, headerGraphic, headline, headlineDes
   //end#region sms and google sheet api functions
 
   return (
-    <section>
+    <section id="getaquote">
       {/* prettier-ignore */}
-      <Typography align="left" variant="h2" gutterBottom className="m-auto mb-3 mt-3 col-xl-8 col-md-10 col-11" style={{ fontWeight: "bolder" }}>
+      <Typography variant="h2" gutterBottom className="m-auto mb-3 mt-3 col-xl-8 col-md-10 col-11" style={{ fontWeight: "bolder" }}>
         QUOTE ESTIMATOR 
       </Typography> 
       <div className="position-relative mx-auto col-xl-8 col-10 d-flex flex-wrap justify-content-between">
         {/* prettier-ignore */}
         <Card className={(classes.root, classes.card) +" p-4 col-md-7 col-12 mb-3 brand-shadow"}>
-          <CardHeader>We are dedicated to transparency, and understand its difficult to get a quick estimate, at HAKN we provide transparency and convenience, you can book us online or get an idea for our rates with this quote estimator</CardHeader>
           <CardContent>
             <div className={classes.root + " w-100 h-100"}>
                 
@@ -477,7 +476,7 @@ export default React.memo(({ data, context, headerGraphic, headline, headlineDes
                     color="primary"
                     name="stump removal"
                     inputProps={{ "aria-label": "stump removal checkbox" }}
-                    onChange={(event, checked) =>calculateStumpRemovalCost(checked)}
+                    onChange={(event, checked)=>calculateStumpRemovalCost(checked)}
                   />
                 </div>
 
@@ -506,7 +505,7 @@ export default React.memo(({ data, context, headerGraphic, headline, headlineDes
         <Card className={(classes.root, classes.card) + " p-1 col-md-4 col-12 brand-shadow"}>
           <CardContent className="position-relative d-flex justify-content-between flex-column h-100">
             {showInvoice()}
-            {quoteCalculatorGraphic(quoteCalculatorState.totalCost)}
+            {quoteCalculatorGraphic()}
           </CardContent>
         </Card>
       </div>

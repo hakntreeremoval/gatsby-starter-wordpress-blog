@@ -80,7 +80,7 @@ export default function Index() {
 
   return (
     <Layout>
-      <HeroHeader id="back-to-top-anchor" />
+      <HeroHeader />
       {/* services */}
       <CustomCard
         title="SERVICES"

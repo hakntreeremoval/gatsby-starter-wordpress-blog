@@ -55,7 +55,7 @@ export default function Layout({ children, window }) {
 
   const scrollToTop = event => {
     const anchor = (event.target.ownerDocument || document).querySelector(
-      "#back-to-top-anchor"
+      "#home"
     )
 
     if (anchor) {

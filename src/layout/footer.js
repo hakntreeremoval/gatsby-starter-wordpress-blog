@@ -30,15 +30,20 @@ const useStyles = makeStyles(theme => ({
     alignSelf: "center",
     marginBottom: theme.spacing(3),
   },
+  footerItem: {
+    border: theme.shape.brandBorder,
+    boxShadow: theme.shadows.brandShadow,
+  },
   footer: {
     //make all descendents that are a h3 have a bold font weight
     "& * > h3": {
-      fontWeight: 1000,
+      fontWeight: "bold",
     },
+    background: theme.palette.text.primary,
   }
 }))
 
-export default function HeroHeader({ children }) {
+export default function Footer({ children }) {
   const pages = [
     { name: "home", url: "#home" },
     { name: "about", url: "#about" },
@@ -60,7 +65,7 @@ export default function HeroHeader({ children }) {
 
   //prettier-ignore
   const logo = React.useCallback(color =>
-    <div className="mx-auto w-100 h-100" style={{ fill: color, maxHeight: '125px', marginTop: '-25px' }}
+    <div className="mx-auto w-100 h-100" style={{ fill: color, maxHeight: '125px', marginTop: '5px' }}
       dangerouslySetInnerHTML={{ __html: logoFull }}
     />, [])
 
@@ -75,37 +80,27 @@ export default function HeroHeader({ children }) {
     ]
   return (
     // prettier-ignore
-    <footer className={classes.footer + " footer p-5 brand-secondary mt-2"} style={{ minHeight: "150px", minWidth: "100%" }}>
-      {grassSvg("top", "#3F310E")}
+    <footer className={classes.footer + " footer mt-2"} style={{ minHeight: "150px", minWidth: "100%" }}>
       {/* materialui grid with two columns */}
-      <Grid container spacing={6} className="col-10 m-auto">
+      <Grid container spacing={6} className="col-11 m-auto">
         <Grid item md={6} xs={12}>
           {logo("#F2E5C4")}
         </Grid>
         <Grid item md={6} xs={12}>
-          <div className="d-flex flex-row justify-content-between m-auto" item xs={12}>
-            {/* make typography element not line break, so that in this div className="d-flex flex-row justify-content-between my-0" item two items are side by side */}
-            <Grid item xs={6}>
+          <div className={classes.footerItem+" d-flex flex-row justify-content-between m-auto"} item xs={12}>
+            <Grid item xs={4}>
                 <Typography variant="h3" align="left" className={classes.typography}>{"Phone"}</Typography>
             </Grid>
-            <Grid item xs={6}>
-                <Typography variant="h4" align="left" className={classes.typography}>{haknDetails.phone}</Typography>
+            <Grid item xs={8}>
+                <Typography variant="body1" align="left" className={classes.typography}>{haknDetails.phone}</Typography>
             </Grid>
           </div>
-          <div className="d-flex flex-row justify-content-between my-0" item xs={12}>
-            <Grid item xs={6}>
-              <Typography variant="h3" align="left" className={classes.typography}>{"Email"}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="h4" align="left" className={classes.typography}>{haknDetails.email}</Typography>
-            </Grid>
-          </div>
-          <div className="d-flex flex-row justify-content-between my-0" item xs={12}>
-            <Grid item xs={6}>
+          <div className={classes.footerItem+" d-flex flex-row justify-content-between my-0"} item xs={12}>
+            <Grid item xs={4}>
               <Typography variant="h3" align="left" className={classes.typography}>{"Social media"}</Typography>
             </Grid>
-            <Grid item xs={6}>
-              <Typography variant="h4" align="left" className={classes.typography + " d-flex flex-row justify-content-start"}>
+            <Grid item xs={8}>
+              <Typography variant="body1" align="left" className={classes.typography + " d-flex flex-row justify-content-start"}>
               {socialMediaLinks.map(({name,url,Icon}) => 
                   <IconButton
                     aria-label={name}
@@ -114,12 +109,19 @@ export default function HeroHeader({ children }) {
                     aria-haspopup="true"
                     className="d-block p-2"
                     onClick={() => { window.open(url, '_blank') }}
-                    
                   >
                   <Icon fontSize="medium"/>
                   </IconButton>
               )}
               </Typography>
+            </Grid>
+          </div>
+          <div className={classes.footerItem+" d-flex flex-row justify-content-between my-0"} item xs={12}>
+            <Grid item xs={4}>
+              <Typography variant="h3" align="left" className={classes.typography}>{"Email"}</Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <Typography variant="body1" align="left" className={classes.typography}>{haknDetails.email}</Typography>
             </Grid>
           </div>
         </Grid>

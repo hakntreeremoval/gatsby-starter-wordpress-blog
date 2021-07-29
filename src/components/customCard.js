@@ -28,6 +28,35 @@ const useStyles = makeStyles(theme => ({
     textAlign: "center",
     padding: "0px",
   },
+  serviceCard: {
+    position: "relative",
+    pointerEvents: "all",
+    margin: "auto",
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    top: 0,
+    height: '100%',
+    borderRadius: theme.shape.brandBorderRadius,
+    boxShadow: 'none',
+    background: theme.palette.background.primary,
+    padding: theme.spacing(4),
+    border: theme.shape.brandBorder,
+    "&:hover": {
+        boxShadow: theme.shadows.brand,
+    }
+  },
+  serviceCardImage: {
+    // { minWidth: "150px",maxWidth: "fit-content", mixBlendMode: "multiply" }
+    width: "100%",
+    height: "100%",
+    background: "none",
+    mixBlendMode: "multiply",
+    maxWidth: '400px',      
+    top: 0,
+    position: "relative",
+    // minWidth: '225px',      
+    minWidth: '235px',      
+  },
   media: {
     height: 0,
     // paddingTop: "56.25%", // 16:9
@@ -36,7 +65,7 @@ const useStyles = makeStyles(theme => ({
     transform: "rotate(0deg)",
     margin: "auto",
     transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest,
+      duration: theme.transitions.duration.complex,
     }),
   },
   contentBox: {
@@ -48,38 +77,43 @@ const useStyles = makeStyles(theme => ({
   sectionColor: {
     backgroundColor: theme.palette.text.primary,
   },
+  section: {
+    background: theme.palette.background.primary,
+    boxShadow: theme.shadows.brand,
+    borderRadius: theme.shape.brandBorderRadius,
+  }
 }))
 
-export default React.memo(({ serviceData, title }) => {
+export default React.memo(({ serviceData, title,id }) => {
   const classes = useStyles()
+  const [expanded, setExpanded] = React.useState(Array.from(Array(serviceData.length).keys()).map((i) => i==0 ? true : false))
+  
+  const handleExpandClick = (index) => 
+  //set index in array to true and allow it to be toggled, while all other items remain false
+  setExpanded([...Array(serviceData.length).keys()].map((i) => i === index ? true : false))
 
-  const [expanded, setExpanded] = React.useState(false)
-  //prettier-ignore
-  const handleExpandClick = () => setExpanded(!expanded)
-  //prettier-ignore
-  const contentBox = React.useCallback(img => (
+  const contentBox = React.useCallback((img,index) => (
     <div
-      onClick={() => handleExpandClick()}
-      className="my-4 top-0 mx-auto"
-      style={{ minWidth: "250px",maxWidth: "250px", mixBlendMode: "multiply" }}
+      onClick={() => handleExpandClick(index)}
+      className={classes.serviceCardImage+" my-4 top-0 mx-auto"}
       dangerouslySetInnerHTML={{ __html: styledContentBox(img) }}
     />
   ))
 
   return (
-    <section>
+    <section id={id}>
       <Typography
         variant="h2"
         gutterBottom
-        className="m-auto mb-3 mt-3 col-xl-8 col-md-10 col-11"
+        className="m-auto mb-3 col-xl-8 col-md-10 col-11"
         style={{ fontWeight: "bolder" }}
       >
         {title}
       </Typography>
-      <div className="col-xl-8 col-10 brand-section-bg mx-auto p-4">
+      <div className={classes.section+" col-xl-8 col-10 mx-auto p-4"}>
         <div className="d-flex flex-wrap">
-          {serviceData.map(data => (
-            <div className="position-relative mx-auto top-0" key={data.title}>
+          {serviceData.map((data,index) => (
+            <div onClick={() => handleExpandClick(index)} className={classes.serviceCard} key={data.title}>
               <Card className={classes.root} elevation={0} key={data.title + Math.random()}>
                 <CardContent>
                   <Typography
@@ -91,18 +125,18 @@ export default React.memo(({ serviceData, title }) => {
                     {data.title}
                   </Typography>
                 </CardContent>
-                {contentBox(data.image)}
+                {contentBox(data.image,index)}
                 <CardActions
                   disableSpacing
                   style={{ marginTop: "-65px", zIndex: 25 }}
                 >
+                {/* large button */}
                   <IconButton
                     className={clsx(classes.expand, {
-                      [classes.expandOpen]: expanded,
+                      [classes.expandOpen]: expanded[index],
                     })}
                     color="secondary"
-                    onClick={() => handleExpandClick()}
-                    aria-expanded={expanded}
+                    aria-expanded={expanded[index]}
                     aria-label="show more"
                   >
                     <ExpandMoreIcon
@@ -112,7 +146,7 @@ export default React.memo(({ serviceData, title }) => {
                     />
                   </IconButton>
                 </CardActions>
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <Collapse in={expanded[index]} timeout="auto" unmountOnExit>
                   <CardContent>
                     <Typography
                       align="left"

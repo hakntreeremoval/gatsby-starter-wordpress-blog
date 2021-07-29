@@ -81,11 +81,14 @@ module.exports = {
         trackingId: "UA-164743872-1",
         head: true,
       },
-    },
+    },    
     {
       resolve: `gatsby-plugin-preload-fonts`,
       options: {
-        crossOrigin: `use-credentials`,
+        // crossOrigin: `use-credentials`,
+        // OR
+        crossOrigin: pathname =>
+          pathname.match(/^\/elevated/) ? `use-credentials` : `anonymous`,
       },
     },
     `gatsby-plugin-sass`,

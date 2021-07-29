@@ -33,17 +33,21 @@ theme.palette.text.secondary = "#DDD1B3 "
 //brand background
 theme.palette.background.default = "#F2D7AC"
 theme.palette.background.headline = "#F2E5C4"
+
+//brand theme injections
 theme.shadows.brand = "0px 4px 20px rgba(63, 49, 14, 0.6)"
 
 theme.palette.background.secondary =
-  "linear-gradient(180deg, #795E1B 0%, #3F310E 55.21%)"
+"linear-gradient(180deg, #795E1B 0%, #3F310E 55.21%)"
 
 theme.palette.background.primary =
-  "linear-gradient(180deg, rgba(242, 229, 196, 0.2) 39.58%, rgba(226, 131, 21, 0.2) 73.44%), radial-gradient(107.14% 107.14% at 15.12% 13.17%, #F2E5C4 41.67%, #F5CB98 100%)"
+"linear-gradient(180deg, rgba(242, 229, 196, 0.2) 39.58%, rgba(226, 131, 21, 0.2) 73.44%), radial-gradient(107.14% 107.14% at 15.12% 13.17%, #F2E5C4 41.67%, #F5CB98 100%)"
 
 theme.palette.error.main = "red"
 theme.overrides.MuiBackdrop = "red"
-theme.shape.brandBorderRadius = "35px"
+theme.shape.brandBorderRadius = "25px"
+theme.shape.brandBorder = "1px dashed #3f310e"
+
 //typography
 theme.spacingFromHeader = theme.spacing(6)
 theme.typography.fontFamily = "Source Sans Pro"
@@ -93,6 +97,7 @@ theme.typography.h2 = {
   fontWeight: 200,
   [theme.breakpoints.down("md")]: { 
     fontSize: "45px",
+    textAlign: 'center',
   },
 }
 

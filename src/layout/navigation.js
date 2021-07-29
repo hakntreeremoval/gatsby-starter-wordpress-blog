@@ -21,6 +21,7 @@ import {
   customMenuIcon,
   logoFull,
   logoMedium,
+  logoSmall,
   menuIcon,
 } from "../../static/hardcoded-svgs"
 // import { styled } from "@material-ui/core/styles"
@@ -29,9 +30,12 @@ export default function Navigation({ theme, themeState, children, window }) {
   const [drawerState, setDrawerState] = React.useState(false)
 
   const toggleDrawer = () => event => {
-    //prettier-ignore
-    if (event.type === "keydown" &&(event.key === "Tab" || event.key === "Shift")) {return}
-
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return
+    }
     setDrawerState(!drawerState)
   }
 
@@ -58,46 +62,67 @@ export default function Navigation({ theme, themeState, children, window }) {
   )
 
   const menuIcon = React.useCallback(
-    () => <div dangerouslySetInnerHTML={{ __html: customMenuIcon }} />,
-    []
-  )
-
-  const drawerSwitch = React.useCallback(
-    () => (
-      <React.Fragment key="drawer">
-        <Button startIcon={menuIcon()} onClick={toggleDrawer()} />
-        <Drawer anchor="left" open={drawerState} onClose={toggleDrawer()}>
-          {/* {list(anchor)} */}
-        </Drawer>
-      </React.Fragment>
+    color => (
+      <div
+        style={{ fill: color }}
+        className="mx-auto"
+        dangerouslySetInnerHTML={{ __html: customMenuIcon }}
+      />
     ),
     []
   )
 
-  //prettier-ignore
   const logo = React.useCallback(
     color => (
       <div
         style={{ fill: color }}
-        className="d-none d-md-block"
+        className="d-none d-xl-block d-md-none"
         dangerouslySetInnerHTML={{ __html: logoFull }}
       />
     ),
     []
   )
-  //prettier-ignore
-  const smallLogo = React.useCallback(() => (<div className="d-block d-md-none" dangerouslySetInnerHTML={{ __html: logoMedium }}/>),[])
+  const mediumLogo = React.useCallback(
+    color => (
+      <div
+        onClick={navigateTo("#top")}
+        style={{ fill: color }}
+        className="d-lg-block d-xl-none d-block"
+        dangerouslySetInnerHTML={{ __html: logoMedium }}
+      />
+    ),
+    []
+  )
+
+  const smallLogo = React.useCallback(
+    color => (
+      <div
+        onClick={navigateTo("#top")}
+        style={{ fill: color }}
+        className="d-block d-md-none"
+        dangerouslySetInnerHTML={{ __html: logoSmall }}
+      />
+    ),
+    []
+  )
 
   const pages = [
     { name: "Contact Us", url: "#contact" },
     { name: "Services", url: "#services" },
-    { name: "About Us", url: "#aboutus" },
+    { name: "Get a quote", url: "#getaquote" },
     { name: "Other Services", url: "#otherservices" },
   ]
+
   const boldCurrentPage = React.useCallback((name, i) => {
     if (i !== 0) return name
     else return <b>{name}</b>
   }, [])
+
+  const navigateTo = page => {
+    if (page[0] === "#") document.getElementById(page)?.scrollIntoView()
+    // window.location.hash = page.url
+  }
+
   const pageNav = React.useCallback(
     () => (
       <div className="justify-content-evenly d-none d-md-block">
@@ -111,6 +136,7 @@ export default function Navigation({ theme, themeState, children, window }) {
               color: "#534213",
               fontFamily: "Berlin-Sans-FB",
             }}
+            onClick={event => navigateTo(page.url)}
           >
             {boldCurrentPage(page.name.toUpperCase(), i)}
           </Link>
@@ -124,6 +150,22 @@ export default function Navigation({ theme, themeState, children, window }) {
     target: window ? window() : undefined,
     disableHysteresis: true,
   })
+
+  //contains drawer for the menu
+  const drawerSwitch = React.useCallback(
+    () => (
+      <React.Fragment key="drawer">
+        <Button className="p-0" onClick={toggleDrawer()}>
+          {menuIcon()}
+        </Button>
+        <Drawer anchor="left" open={drawerState} onClose={toggleDrawer()}>
+          {/* {list(anchor)} */}
+        </Drawer>
+      </React.Fragment>
+    ),
+    []
+  )
+
   return (
     <Slide appear={true} direction="down" in={!trigger}>
       <AppBar
@@ -137,8 +179,11 @@ export default function Navigation({ theme, themeState, children, window }) {
       >
         <Toolbar className="justify-content-between px-3">
           {logo("#3F310E")}
-          {smallLogo()}
+          {mediumLogo("#3F310E")}
+          {/* {smallLogo("#3F310E")} */}
+
           {pageNav()}
+
           {drawerSwitch()}
         </Toolbar>
       </AppBar>

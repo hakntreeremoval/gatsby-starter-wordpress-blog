@@ -7,7 +7,7 @@ import { TransitionGroup } from "react-transition-group"
 import { telstraTower } from "../../static/hardcoded-svgs"
 import { heroGraphic } from "../../static/heroGraphic.js"
 import { Button, Icon, Typography, Grid, makeStyles } from "@material-ui/core"
-import { ContactPhoneRounded, Phone } from "@material-ui/icons"
+import { RateReview, Call, Visibility } from "@material-ui/icons"
 import CustomButton from "./customButton.js"
 // const _Button = styled(Button)`
 //   background: orange;
@@ -19,15 +19,19 @@ import CustomButton from "./customButton.js"
 //makestyles for material ui
 const useStyles = makeStyles(theme => ({
   heroGraphic: {
-    [theme.breakpoints.down('lg')]: {
-      opacity: .15,
-      position: 'absolute',
-      display: 'absolute',
-      top: '-22.5%',
-      zIndex: -1,
-      order: 0,
-      maxWidth:'800px'
+    [theme.breakpoints.down('md')]: {
+      // opacity: .15,
+      // position: 'absolute',
+      // display: 'absolute',
+      // top: '-22.5%',
+      // zIndex: -1,
+      // order: 0,
+      // maxWidth:'800px',
+      visibility: 'hidden',
+      display: 'none'
     },
+    display: 'block',
+    visibility: 'visible',
     position: 'relative',
     zIndex: -1,
   }
@@ -92,16 +96,16 @@ export default function HeroHeader ({ context, headerGraphic, headline, headline
         style={{
           background: "#F2E5C4",
           marginTop: '-80px',
-          marginBottom: "100px",
+          marginBottom: "20px",
           paddingTop: '140px',
-          paddingBottom: '100px',
+          paddingBottom: '0px',
           height:"150%",
           width:"110vw",
           zIndex: 0
           // boxShadow: "inset 0px -37px 34px -15px rgba(63, 49, 14, 0.15)",
         }}
       >
-        <section className="col-xl-8 col-10 m-auto">
+        <section className="col-xl-8 col-10 m-auto" id="home">
           {/* div wrapper only active on mobile breakpoint */}
 
           <div>
@@ -109,14 +113,14 @@ export default function HeroHeader ({ context, headerGraphic, headline, headline
               <div className="flex-column h-100 position-relative m-auto">
                 {heroData.headline()}
                 {heroData.description()} 
-                  <Grid container spacing={4}  className="mt-4">
-                    <Grid item xs={6}>
-                      <CustomButton shadow action={() => ""} Icon={ContactPhoneRounded}>
-                        Call for a free quote
+                  <Grid container spacing={4}  className="mt-4 mx-sm-auto">
+                    <Grid item md={6} xs={12} className="p-0">
+                      <CustomButton shadow action={() => document.getElementById("getaquote").scrollIntoView()} Icon={RateReview}>
+                        Get a free quote
                       </CustomButton>
                     </Grid>
-                    <Grid item xs={6}>
-                      <CustomButton shadow action={() => ""} Icon={Phone}>
+                    <Grid item md={6} xs={12} className="px-0">
+                      <CustomButton shadow action={() => window.location.href = "tel:+610459289772"} Icon={Call}>
                         Call us today!
                       </CustomButton>
                     </Grid>
