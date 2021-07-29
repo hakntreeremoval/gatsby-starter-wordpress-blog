@@ -16,6 +16,7 @@ import firewoodImage from "../../static/images/firewood.jpeg"
 import emergencyImage from "../../static/images/emergency-services.jpg"
 import conservationImage from "../../static/images/conservation.jpg"
 import hedgeRemovalImage from "../../static/images/hedge-removal.jpg"
+import { Grid } from "@material-ui/core"
 
 export default function Index() {
   const marginAmount = "175px"
@@ -80,23 +81,33 @@ export default function Index() {
 
   return (
     <Layout>
+    <Grid container spacing={6}>
+      <Grid item xs={12}>
       <HeroHeader />
+      </Grid>
       {/* services */}
+      <Grid item xs={12}>
       <CustomCard
         title="SERVICES"
         style={{ marginBottom: marginAmount }}
         id="#services"
         serviceData={servicesData}
       />
+      </Grid>
       {/* <AboutUs id="#aboutus" /> */}
+      <Grid item xs={12}>
       <QuoteCalculator style={{ marginBottom: marginAmount }} />
+      </Grid>
       {/* other services */}
+      <Grid item xs={12}>
       <CustomCard
         title="OTHER SERVICES"
         style={{ marginBottom: marginAmount }}
         id="#otherservices"
         serviceData={otherServicesData}
       />
+      </Grid>
+    </Grid>
     </Layout>
   )
 }

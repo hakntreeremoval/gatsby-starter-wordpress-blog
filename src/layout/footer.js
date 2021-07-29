@@ -28,11 +28,10 @@ const useStyles = makeStyles(theme => ({
   typography: {
     color: theme.palette.background.default,
     alignSelf: "center",
-    marginBottom: theme.spacing(3),
   },
   footerItem: {
-    border: theme.shape.brandBorder,
-    boxShadow: theme.shadows.brandShadow,
+    border: "1px dashed rgba(255,255,255,.3)",
+    padding: theme.spacing(2),
   },
   footer: {
     //make all descendents that are a h3 have a bold font weight
@@ -65,7 +64,7 @@ export default function Footer({ children }) {
 
   //prettier-ignore
   const logo = React.useCallback(color =>
-    <div className="mx-auto w-100 h-100" style={{ fill: color, maxHeight: '125px', marginTop: '5px' }}
+    <div className="mx-auto w-100 h-100" style={{ fill: color, maxHeight: '125px', maxWidth: '225px', marginTop: '5px' }}
       dangerouslySetInnerHTML={{ __html: logoFull }}
     />, [])
 
@@ -82,11 +81,11 @@ export default function Footer({ children }) {
     // prettier-ignore
     <footer className={classes.footer + " footer mt-2"} style={{ minHeight: "150px", minWidth: "100%" }}>
       {/* materialui grid with two columns */}
-      <Grid container spacing={6} className="col-11 m-auto">
-        <Grid item md={6} xs={12}>
+      <Grid container spacing={6} className="col-8 m-auto">
+        <Grid item md={3} xs={12}>
           {logo("#F2E5C4")}
         </Grid>
-        <Grid item md={6} xs={12}>
+        <Grid item md={9} xs={12}>
           <div className={classes.footerItem+" d-flex flex-row justify-content-between m-auto"} item xs={12}>
             <Grid item xs={4}>
                 <Typography variant="h3" align="left" className={classes.typography}>{"Phone"}</Typography>
@@ -103,12 +102,12 @@ export default function Footer({ children }) {
               <Typography variant="body1" align="left" className={classes.typography + " d-flex flex-row justify-content-start"}>
               {socialMediaLinks.map(({name,url,Icon}) => 
                   <IconButton
+                    key={name}
                     aria-label={name}
                     color="inherit"
-                    aria-owns={url}
                     aria-haspopup="true"
                     className="d-block p-2"
-                    onClick={() => { window.open(url, '_blank') }}
+                    onClick={() => { typeof window !== 'null' && window?.open(url, '_blank') }}
                   >
                   <Icon fontSize="medium"/>
                   </IconButton>

@@ -18,6 +18,19 @@ import CustomButton from "./customButton.js"
 
 //makestyles for material ui
 const useStyles = makeStyles(theme => ({
+  typography: {
+    color: theme.palette.text.secondary,
+  },
+  heroUnderlay: {
+    background: 'linear-gradient(180deg, #3F310E 0%, #795E1B 100%)',
+    marginTop: '-80px',
+    marginBottom: "20px",
+    paddingTop: '120px',
+    paddingBottom: '40px',
+    height: "150%",
+    width: "100vw",
+    zIndex: 0
+  },
   heroGraphic: {
     [theme.breakpoints.down('md')]: {
       // opacity: .15,
@@ -33,23 +46,30 @@ const useStyles = makeStyles(theme => ({
     display: 'block',
     visibility: 'visible',
     position: 'relative',
-    zIndex: -1,
-  }
+    zIndex: 0,
+  },
+  heroContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    margin: 'auto'
+  },
 }))
 
 //prettier-ignore
-export default function HeroHeader ({ context, headerGraphic, headline, headlineDescription }) {
+export default function HeroHeader({ context, headerGraphic, headline, headlineDescription }) {
   //prettier-ignore
   const { site: { siteMetadata: { title, description } } } = useStaticQuery(pageQuery);
 
   const classes = useStyles()
 
   //prettier-ignore
-  const _telstraTower = React.useCallback(() => (<div className="position-absolute overflow-hidden d-none d-lg-block" style={{ right: "0px", top: "10%",zIndex:0 }} dangerouslySetInnerHTML={{ __html: telstraTower }}></div>), []);
+  const _telstraTower = React.useCallback(() => (<div className="position-absolute overflow-hidden d-none d-lg-block" style={{ right: "0px", top: "10%", zIndex: 0 }} dangerouslySetInnerHTML={{ __html: telstraTower }}></div>), []);
 
   const heroData = {
     headline: () => (
-      <Typography variant="h1" component="h1" gutterBottom>
+      <Typography variant="h1" gutterBottom className={classes.typography}>
         SWIFT &<br />
         ELEGANT TREE
         <br />
@@ -57,7 +77,7 @@ export default function HeroHeader ({ context, headerGraphic, headline, headline
       </Typography>
     ),
     description: () => (
-      <Typography component="body" variant="body1" gutterBottom>
+      <Typography variant="body1" gutterBottom className={classes.typography}>
         At HAKN tree removal, we provide a trusted alternative
         <br />
         for customers, eliminating the uncertainty when hiring
@@ -70,69 +90,42 @@ export default function HeroHeader ({ context, headerGraphic, headline, headline
   const _heroGraphic = React.useCallback(
     () => (
       <>
-        <div 
+        <div
           className={classes.heroGraphic + " col-5 h-100 m-auto"}
           dangerouslySetInnerHTML={{ __html: heroGraphic }}
-          style={{maxWidth: "700px"}}
-        />
-        {/* <LottiePlayer
-        src="../../static/animations/removal.json"
-        mode="bounce"
-        background="transparent"
-        speed="1"
-        style="width: 300px; height: 300px;"
-        hover
-        loop
-        controls
-        autoplay
-        /> */}
-        </>
+          style={{ maxWidth: "700px" }}
+        /> 
+      </>
     ),
     []
   )
   return (
     <>
-      <div
-        style={{
-          background: "#F2E5C4",
-          marginTop: '-80px',
-          marginBottom: "20px",
-          paddingTop: '140px',
-          paddingBottom: '0px',
-          height:"150%",
-          width:"110vw",
-          zIndex: 0
-          // boxShadow: "inset 0px -37px 34px -15px rgba(63, 49, 14, 0.15)",
-        }}
-      >
-        <section className="col-xl-8 col-10 m-auto" id="home">
+      <div className={classes.heroUnderlay}>
+        <section className={classes.heroContainer+" col-xl-8 col-10"} id="home">
           {/* div wrapper only active on mobile breakpoint */}
-
-          <div>
-            <div className="d-flex flex-wrap justify-content-center">
-              <div className="flex-column h-100 position-relative m-auto">
-                {heroData.headline()}
-                {heroData.description()} 
-                  <Grid container spacing={4}  className="mt-4 mx-sm-auto">
-                    <Grid item md={6} xs={12} className="p-0">
-                      <CustomButton shadow action={() => document.getElementById("getaquote").scrollIntoView()} Icon={RateReview}>
-                        Get a free quote
-                      </CustomButton>
-                    </Grid>
-                    <Grid item md={6} xs={12} className="px-0">
-                      <CustomButton shadow action={() => window.location.href = "tel:+610459289772"} Icon={Call}>
-                        Call us today!
-                      </CustomButton>
-                    </Grid>
-                  </Grid> 
-              </div>
-              {_heroGraphic()}
-              {/* active on mobile breakpoint */}
-              <div className="col-5 mt-3 mx-auto w-100 grid-wrapper d-sm-none">
-              </div>
+ 
+            <div className="flex-column h-100 position-relative m-auto">
+              {heroData.headline()}
+              {heroData.description()}
+              <Grid container spacing={4} className="mt-4 mx-sm-auto">
+                <Grid item md={6} xs={12} className="p-0">
+                  <CustomButton shadow action={() => document.getElementById("#getaquote")?.scrollIntoView()} Icon={RateReview}>
+                    Get a free quote
+                  </CustomButton>
+                </Grid>
+                <Grid item md={6} xs={12} className="px-0">
+                  <CustomButton shadow action={() => window.location.href = "tel:+610459289772"} Icon={Call}>
+                    Call us today!
+                  </CustomButton>
+                </Grid>
+              </Grid>
             </div>
-          </div>
-          {_telstraTower()}
+            {_heroGraphic()}
+            {/* active on mobile breakpoint */}
+            <div className="col-5 mt-3 mx-auto w-100 grid-wrapper d-sm-none">
+            </div> 
+          {/* {_telstraTower()} */}
           {/* <div className="brand-section-bg d-sm-none d-block p-4"></div> */}
         </section>
       </div>

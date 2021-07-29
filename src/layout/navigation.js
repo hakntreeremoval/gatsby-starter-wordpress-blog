@@ -12,6 +12,7 @@ import {
   ListItem,
   ListItemText,
   useScrollTrigger,
+  SwipeableDrawer,
 } from "@material-ui/core"
 import { Menu } from "@material-ui/icons"
 
@@ -24,42 +25,30 @@ import {
   logoSmall,
   menuIcon,
 } from "../../static/hardcoded-svgs"
-// import { styled } from "@material-ui/core/styles"
+import { ClassNames } from "@emotion/react"
+import { makeStyles } from "@material-ui/core/styles"
+
+
+const useStyles = makeStyles(theme => ({
+  drawer: {
+    "& .MuiDrawer-paper": {
+      background: theme.palette.background.primary,
+    },
+  },
+  drawerList: {
+    padding: theme.spacing(5),
+    margin: theme.spacing(3),
+  },
+}));
 
 export default function Navigation({ theme, themeState, children, window }) {
+  const classes = useStyles();
   const [drawerState, setDrawerState] = React.useState(false)
+  const iOS = /iPad|iPhone|iPod/.test(navigator?.userAgent);
 
-  const toggleDrawer = () => event => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return
-    }
-    setDrawerState(!drawerState)
-  }
-
-  const list = React.useCallback(
-    () => (
-      <div
-        role="presentation"
-        onClick={toggleDrawer()}
-        onKeyDown={toggleDrawer()}
-        className="p-5 m-5"
-      >
-        <List>
-          {["Contact", "Services", "About Us", "Other Services"].map(
-            (text, index) => (
-              <ListItem button key={text}>
-                <ListItemText primary={text} />
-              </ListItem>
-            )
-          )}
-        </List>
-      </div>
-    ),
-    []
-  )
+  const toggleDrawer = React.useCallback(event => setDrawerState(
+    (drawerState) => !drawerState
+  ), [])
 
   const menuIcon = React.useCallback(
     color => (
@@ -68,14 +57,13 @@ export default function Navigation({ theme, themeState, children, window }) {
         className="mx-auto"
         dangerouslySetInnerHTML={{ __html: customMenuIcon }}
       />
-    ),
-    []
-  )
+    ), [])
 
   const logo = React.useCallback(
     color => (
       <div
         style={{ fill: color }}
+        onClick={navigateTo("#top")}
         className="d-none d-xl-block d-md-none"
         dangerouslySetInnerHTML={{ __html: logoFull }}
       />
@@ -107,15 +95,15 @@ export default function Navigation({ theme, themeState, children, window }) {
   )
 
   const pages = [
-    { name: "Contact Us", url: "#contact" },
+    // { name: "Contact Us", url: "#contact" },
     { name: "Services", url: "#services" },
     { name: "Get a quote", url: "#getaquote" },
     { name: "Other Services", url: "#otherservices" },
   ]
 
   const boldCurrentPage = React.useCallback((name, i) => {
-    if (i !== 0) return name
-    else return <b>{name}</b>
+    if (pages[i].url === document.location.hash) return <b>{name}</b>
+    else return name
   }, [])
 
   const navigateTo = page => {
@@ -128,17 +116,20 @@ export default function Navigation({ theme, themeState, children, window }) {
       <div className="justify-content-evenly d-none d-md-block">
         {pages.map((page, i) => (
           <Link
-            key={page.name}
-            className="m-1"
+            key={page.name} 
             to={page.url}
             style={{
+              fontSize: '1.2rem',
+              marginLeft: '15px',
+              marginRight: '15px',
               textDecoration: "none",
               color: "#534213",
               fontFamily: "Berlin-Sans-FB",
             }}
             onClick={event => navigateTo(page.url)}
           >
-            {boldCurrentPage(page.name.toUpperCase(), i)}
+            {page.name}
+            {/* {boldCurrentPage(page.name.toUpperCase(), i)} */}
           </Link>
         ))}
       </div>
@@ -155,16 +146,53 @@ export default function Navigation({ theme, themeState, children, window }) {
   const drawerSwitch = React.useCallback(
     () => (
       <React.Fragment key="drawer">
-        <Button className="p-0" onClick={toggleDrawer()}>
+        <Button className="p-0" onClick={e => toggleDrawer(e)}>
           {menuIcon()}
         </Button>
-        <Drawer anchor="left" open={drawerState} onClose={toggleDrawer()}>
-          {/* {list(anchor)} */}
-        </Drawer>
+        <SwipeableDrawer
+          // isableBackdropTransition={!iOS} 
+          onOpen={() => setDrawerState(true)}
+          onClose={() => setDrawerState(false)}
+          disableDiscovery={iOS}
+          anchor="right" open={drawerState}
+          className={classes.drawer}
+        >
+          {list()}
+        </SwipeableDrawer>
       </React.Fragment>
-    ),
-    []
-  )
+    ), [drawerState])
+
+  const list = React.useCallback(
+    () => (
+      <div
+        role="presentation"
+        onClick={e => toggleDrawer(e)}
+        onKeyDown={e => toggleDrawer(e)}
+        className={classes.drawerList}
+      >
+        <List>
+          {pages.map(
+            (page, index) => (
+              <ListItem button key={page.name} onClick={e => {
+                navigateTo(page.url);
+                toggleDrawer();
+              }}>
+                <Link
+                  key={page.name} to={page.url} onClick={event => navigateTo(page.url)}
+                  style={{
+                    textDecoration: "none",
+                    color: "#534213",
+                    fontFamily: "Berlin-Sans-FB",
+                  }}
+                >
+                  {boldCurrentPage(page.name, index)}
+                </Link>
+              </ListItem>
+            )
+          )}
+        </List>
+      </div>
+    ), [drawerState])
 
   return (
     <Slide appear={true} direction="down" in={!trigger}>

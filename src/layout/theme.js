@@ -26,12 +26,13 @@ const fontReducerForThemeBreakpoint = (fontSize,breakpoint="md",reduceRatio=0.66
 theme.palette.primary.main = "#EC973C"
 theme.palette.secondary.main = "#3F310E"
 // theme.palette.secondary.main = "#3F310E"
+
 //brand text
 theme.palette.text.primary = "#3F310E"
 //brand gradient
 theme.palette.text.secondary = "#DDD1B3 "
 //brand background
-theme.palette.background.default = "#F2D7AC"
+theme.palette.background.default = "#f2e5c4"
 theme.palette.background.headline = "#F2E5C4"
 
 //brand theme injections
@@ -60,11 +61,17 @@ theme.typography.body1 = {
   [theme.breakpoints.down("md")]: { 
     fontSize: "16px",
   },
+  [theme.breakpoints.down("sm")]: { 
+    fontSize: "16px",
+  },
 }
 theme.typography.h5 = {
   fontSize: "12px",
   fontWeight: 400,
   color: theme.palette.text.primary,
+  [theme.breakpoints.down("sm")]: { 
+    fontSize: "12px",
+  },
   [theme.breakpoints.down("md")]: { 
     fontSize: "12px",
   },
@@ -75,6 +82,9 @@ theme.typography.h4 = {
   fontSize: "20px",
   fontWeight: 500,
   color: theme.palette.text.primary,
+  [theme.breakpoints.down("sm")]: { 
+    fontSize: "13px",
+  },
   [theme.breakpoints.down("md")]: { 
     fontSize: "13px",
   },
@@ -86,7 +96,10 @@ theme.typography.h3 = {
   fontWeight: 200,
   color: theme.palette.text.primary,
   [theme.breakpoints.down("md")]: { 
-    fontSize: "25px",
+    fontSize: "33px",
+  },
+  [theme.breakpoints.down("sm")]: { 
+    fontSize: "16px",
   },
 }
 
@@ -99,6 +112,10 @@ theme.typography.h2 = {
     fontSize: "45px",
     textAlign: 'center',
   },
+  [theme.breakpoints.down("sm")]: { 
+    fontSize: "45px",
+    textAlign: 'center',
+  },
 }
 
 theme.typography.h1 = {
@@ -106,8 +123,8 @@ theme.typography.h1 = {
   fontSize: "78px",
   color: theme.palette.text.primary,
   fontWeight: 800,
-  [theme.breakpoints.down("md")]: { 
-    fontSize: "52px",
+  [theme.breakpoints.down("lg")]: { 
+    fontSize: "56px",
   },
   [theme.breakpoints.down("sm")]: { 
     fontSize: "45px",
