@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
 export default function Navigation({ theme, themeState, children, window }) {
   const classes = useStyles();
   const [drawerState, setDrawerState] = React.useState(false)
-  const iOS = /iPad|iPhone|iPod/.test(navigator?.userAgent);
+  // const iOS = typeof navigator != 'null' ? /iPad|iPhone|iPod/.test(navigator?.userAgent) : false;
 
   const toggleDrawer = React.useCallback(event => setDrawerState(
     (drawerState) => !drawerState
@@ -102,11 +102,13 @@ export default function Navigation({ theme, themeState, children, window }) {
   ]
 
   const boldCurrentPage = React.useCallback((name, i) => {
+    if(typeof window === "undefined") return//we are on server side
     if (pages[i].url === document.location.hash) return <b>{name}</b>
     else return name
   }, [])
 
   const navigateTo = page => {
+    if(typeof window === "undefined") return//we are on server side
     if (page[0] === "#") document.getElementById(page)?.scrollIntoView()
     // window.location.hash = page.url
   }
@@ -151,9 +153,9 @@ export default function Navigation({ theme, themeState, children, window }) {
         </Button>
         <SwipeableDrawer
           // isableBackdropTransition={!iOS} 
+          // disableDiscovery={iOS}
           onOpen={() => setDrawerState(true)}
           onClose={() => setDrawerState(false)}
-          disableDiscovery={iOS}
           anchor="right" open={drawerState}
           className={classes.drawer}
         >

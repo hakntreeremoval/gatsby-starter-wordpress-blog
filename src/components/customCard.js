@@ -21,6 +21,8 @@ import {
 } from "@material-ui/core"
 import { grass, styledContentBox } from "../../static/hardcoded-svgs"
 
+import TiltPhaseSix from "./reactTilt"
+
 //create jss styles to be used in the following component via const classes=useStyles()
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,12 +53,12 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       padding: theme.spacing(1),
     },
-    transition: theme.transitions.create(["padding",'width','height','box-shadow'], {
+    transition: theme.transitions.create(["padding", 'width', 'height', 'box-shadow'], {
       duration: theme.transitions.duration.complex,
     }),
   },
   //same as service card except on mobile it takes full width
-  expandedCard: { 
+  expandedCard: {
     order: 0,
     position: "relative",
     margin: "auto",
@@ -68,19 +70,19 @@ const useStyles = makeStyles(theme => ({
     border: theme.shape.brandBorder,
     "&:hover": {
       boxShadow: theme.shadows.brand,
-    }, 
-    transition: theme.transitions.create(["padding",'width','height','box-shadow'], {
+    },
+    transition: theme.transitions.create(["padding", 'width', 'height', 'box-shadow'], {
       duration: theme.transitions.duration.complex,
     }),
-  }, 
+  },
   serviceCardImage: {
     // { minWidth: "150px",maxWidth: "fit-content", mixBlendMode: "multiply" }
     width: "50%",
     height: "100%",
     background: "none",
-    mixBlendMode: "multiply",      
+    mixBlendMode: "multiply",
     top: 0,
-    position: "relative",  
+    position: "relative",
   },
   expand: {
     transform: "rotate(0deg)",
@@ -92,7 +94,7 @@ const useStyles = makeStyles(theme => ({
   },
   expandOpen: {
     transform: "rotate(180deg)",
-  }, 
+  },
   section: {
     // background: theme.palette.background.primary,
     // boxShadow: theme.shadows.brand,
@@ -111,18 +113,18 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default React.memo(({ serviceData, title,id }) => {
+export default React.memo(({ serviceData, title, id }) => {
   const classes = useStyles()
   const [expanded, setExpanded] = React.useState(Array.from(Array(serviceData.length).keys()).map((i) => /*i==0 ? true :*/false))
-  
-  const handleExpandClick = (index) => 
-  //set index in array to true and allow it to be toggled, while all other items remain false
-  setExpanded([...Array(serviceData.length).keys()].map((i) => i === index ? !expanded[i] : false))
 
-  const contentBox = React.useCallback((img,index) => (
+  const handleExpandClick = (index) =>
+    //set index in array to true and allow it to be toggled, while all other items remain false
+    setExpanded([...Array(serviceData.length).keys()].map((i) => i === index ? !expanded[i] : false))
+
+  const contentBox = React.useCallback((img, index) => (
     <div
       onClick={() => handleExpandClick(index)}
-      className={classes.serviceCardImage+" my-4 top-0 mx-auto"}
+      className={classes.serviceCardImage + " my-4 top-0 mx-auto"}
       dangerouslySetInnerHTML={{ __html: styledContentBox(img) }}
     />
   ))
@@ -140,33 +142,68 @@ export default React.memo(({ serviceData, title,id }) => {
       >
         {title}
       </Typography>
-      <div className={classes.section+" col-xl-8 col-11 mx-auto"}>
+      <div className={classes.section + " col-xl-8 col-11 mx-auto"}>
         {/* <div className="d-flex flex-wrap justify-content-center"> */}
-        <Grid container justifyContent={`${anyExpanded()?'left':'center'}`}>
-          {serviceData.map((data,index) => (
-            <Grid item 
-              xs={expanded[index]?12:3}
-              md={expanded[index]?12:3}
-              lg={expanded[index]?12:3}
-              xl={expanded[index]?12:2}
-              onClick={() => handleExpandClick(index)} className={expanded[index]?classes.expandedCard:classes.serviceCard} key={data.title}
+        <Grid container justifyContent={`${anyExpanded() ? 'left' : 'center'}`}>
+          {serviceData.map((data, index) => (
+            <Grid item
+              xs={expanded[index] ? 12 : 3}
+              md={expanded[index] ? 12 : 3}
+              lg={expanded[index] ? 12 : 3}
+              xl={expanded[index] ? 12 : 2}
+              onClick={() => handleExpandClick(index)} className={expanded[index] ? classes.expandedCard : classes.serviceCard} key={data.title}
             >
               <Card className={classes.root} elevation={0} key={data.title + Math.random()}>
-                  <Typography
-                    variant="h3"
-                    align="center"
-                    className={classes.typography}
-                    color="secondary"
-                    style={{ marginbottom: "-50px" }}
-                  >
-                    {data.title}
-                  </Typography>
-                {contentBox(data.image,index)}
+                <Typography
+                  variant="h3"
+                  align="center"
+                  className={classes.typography}
+                  color="secondary"
+                  style={{ marginbottom: "-50px" }}
+                >
+                  {data.title}
+                </Typography>
+
+                <TiltPhaseSix
+                  disabled={!expanded[index]}
+                  options={{
+                    // max: 10,
+                    // perspective: 1000,
+                    // scale: 1.05,
+                  }}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    width:'inherit',
+                    height:'inherit',
+                    alignItems: 'center', 
+                  }}
+                >
+                  {contentBox(data.image, index)}
+                </TiltPhaseSix>
+                
+                {expanded[index] &&
+                  <div style={{
+                    borderRadius: '100%',
+                    bottom: ' 0px',
+                    color: ' beige',
+                    opacity: '0.15',
+                    position: ' relative',
+                    top: ' 6px',
+                    width: ' 60px',
+                    background: ' black',
+                    height: '50px',
+                    width: '80%',
+                    margin: ' auto',
+                    zIndex: ' 0',
+                    filter: 'blur(5px)',
+                  }} />}
                 <CardActions
                   disableSpacing
                   style={{ marginTop: "-65px", zIndex: 25 }}
                 >
-                {/* large button */}
+                  {/* large button */}
                   <IconButton
                     className={clsx(classes.expand, {
                       [classes.expandOpen]: expanded[index],
@@ -187,7 +224,7 @@ export default React.memo(({ serviceData, title,id }) => {
                     <Typography
                       align="left"
                       variant="body1"
-                      color="secondary" 
+                      color="secondary"
                       className={classes.cardTypography}
                     >
                       {data.description}

@@ -9,6 +9,7 @@ import { heroGraphic } from "../../static/heroGraphic.js"
 import { Button, Icon, Typography, Grid, makeStyles } from "@material-ui/core"
 import { RateReview, Call, Visibility } from "@material-ui/icons"
 import CustomButton from "./customButton.js"
+import TiltPhaseSix from "./reactTilt"
 // const _Button = styled(Button)`
 //   background: orange;
 //   color: black;
@@ -121,7 +122,24 @@ export default function HeroHeader({ context, headerGraphic, headline, headlineD
                 </Grid>
               </Grid>
             </div>
-            {_heroGraphic()}
+            <TiltPhaseSix
+                  // disabled={!expanded[index]}
+                  options={{
+                    // max: 10,
+                    // perspective: 1000,
+                    // scale: 1.05,
+                  }}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    width:'inherit',
+                    height:'inherit',
+                    alignItems: 'center', 
+                  }}
+                >
+                  {_heroGraphic()}
+                </TiltPhaseSix>
             {/* active on mobile breakpoint */}
             <div className="col-5 mt-3 mx-auto w-100 grid-wrapper d-sm-none">
             </div> 

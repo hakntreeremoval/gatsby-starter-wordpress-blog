@@ -328,7 +328,7 @@ export default React.memo(({ data, context, headerGraphic, headline, headlineDes
     // prettier-ignore
     () => (
       //if invoiceState has all 0 then dont continue
-      <Grid container spacing={1} className={classes.invoiceCard + " position-relative text-center mx-auto w-100 p-4 mb-6 justify-content-evenly"}>
+      <Grid container spacing={1} style={{zIndex:1}} className={classes.invoiceCard + " position-relative text-center mx-auto w-100 p-4 mb-6 justify-content-evenly"}>
         {Object.keys(invoiceState).map(key => invoiceState[key] > 0 &&
           <Grid container item xs={12} spacing={2} key={key}>
             <Grid item xs={8}>
